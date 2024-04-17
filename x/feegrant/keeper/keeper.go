@@ -158,7 +158,7 @@ func (k Keeper) UpdateAllowance(ctx sdk.Context, granter, grantee sdk.AccAddress
 
 // revokeAllowance removes an existing grant
 func (k Keeper) revokeAllowance(ctx sdk.Context, granter, grantee sdk.AccAddress) error {
-	_, err := k.getGrant(ctx, granter, grantee)
+	grant, err := k.getGrant(ctx, granter, grantee)
 	if err != nil {
 		return err
 	}
@@ -166,6 +166,20 @@ func (k Keeper) revokeAllowance(ctx sdk.Context, granter, grantee sdk.AccAddress
 	store := ctx.KVStore(k.storeKey)
 	key := feegrant.FeeAllowanceKey(granter, grantee)
 	store.Delete(key)
+
+	feeAllowance, err := grant.GetGrant()
+	if err != nil {
+		return err
+	}
+
+	expiresAt, err := feeAllowance.ExpiresAt()
+	if err != nil {
+		return err
+	}
+
+	if expiresAt != nil {
+		k.removeFromGrantQueue(ctx, expiresAt, key[1:])
+	}
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
