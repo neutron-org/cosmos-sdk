@@ -23,6 +23,8 @@ type (
 		Set(key, value []byte) (bool, error)
 		Remove(key []byte) ([]byte, bool, error)
 		SaveVersion() ([]byte, int64, error)
+		SetCommitting()
+		UnsetCommitting()
 		Version() int64
 		Hash() []byte
 		WorkingHash() []byte
@@ -51,6 +53,14 @@ func (it *immutableTree) Set(_, _ []byte) (bool, error) {
 
 func (it *immutableTree) Remove(_ []byte) ([]byte, bool, error) {
 	panic("cannot call 'Remove' on an immutable IAVL tree")
+}
+
+func (it *immutableTree) SetCommitting() {
+	panic("cannot call 'SetCommitting' on an immutable IAVL tree")
+}
+
+func (it *immutableTree) UnsetCommitting() {
+	panic("cannot call 'UnsetCommitting' on an immutable IAVL tree")
 }
 
 func (it *immutableTree) SaveVersion() ([]byte, int64, error) {
