@@ -66,6 +66,14 @@ func (ms multiStore) PopStateCache() []*storetypes.StoreKVPair {
 	panic("not implemented")
 }
 
+func (ms multiStore) SetCommitting() {
+	panic("not implemented")
+}
+
+func (ms multiStore) UnsetCommitting() {
+	panic("not implemented")
+}
+
 func (ms multiStore) Commit() storetypes.CommitID {
 	panic("not implemented")
 }
