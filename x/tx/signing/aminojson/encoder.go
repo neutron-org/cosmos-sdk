@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"sort"
 
 	"github.com/pkg/errors"
@@ -48,11 +49,13 @@ func cosmosIntEncoder(_ *Encoder, v protoreflect.Value, w io.Writer) error {
 func cosmosDecEncoder(_ *Encoder, v protoreflect.Value, w io.Writer) error {
 	switch val := v.Interface().(type) {
 	case string:
+		log.Printf("cosmosDecEncoder string value: %v", val)
 		if val == "" {
 			return jsonMarshal(w, "0")
 		}
 		return jsonMarshal(w, val)
 	case []byte:
+		log.Printf("cosmosDecEncoder byte value: %v", val)
 		if len(val) == 0 {
 			return jsonMarshal(w, "0")
 		}
@@ -63,6 +66,7 @@ func cosmosDecEncoder(_ *Encoder, v protoreflect.Value, w io.Writer) error {
 		}
 		return jsonMarshal(w, dec.String())
 	default:
+		log.Printf("cosmosDecEncoder unknown value: %v", val)
 		return fmt.Errorf("unsupported type %T", val)
 	}
 }
