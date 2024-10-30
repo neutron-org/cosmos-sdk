@@ -63,6 +63,8 @@ var (
 	priv2 = secp256k1.GenPrivKey()
 	addr2 = sdk.AccAddress(priv2.PubKey().Address())
 	addr3 = sdk.AccAddress(secp256k1.GenPrivKey().PubKey().Address())
+	addr4 = sdk.AccAddress(secp256k1.GenPrivKey().PubKey().Address())
+	addr5 = sdk.AccAddress(secp256k1.GenPrivKey().PubKey().Address())
 
 	coins     = sdk.Coins{sdk.NewInt64Coin("foocoin", 10)}
 	halfCoins = sdk.Coins{sdk.NewInt64Coin("foocoin", 5)}
@@ -572,4 +574,30 @@ func TestHooks(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, countTrackBeforeSend, expNextCount)
 	expNextCount++
+
+	err = s.BankKeeper.InputOutputCoins(ctx, types.Input{Address: addr1.String(), Coins: triggerTrackSendAmount}, []types.Output{{Address: addr2.String(), Coins: triggerTrackSendAmount}})
+	require.NoError(t, err)
+	require.Equal(t, countTrackBeforeSend, expNextCount)
+
+	multiSendTrackInput := types.Input{
+		Address: addr1.String(),
+		Coins:   triggerTrackSendAmount.MulInt(sdkmath.NewInt(4)),
+	}
+	multiSendTrackOutput := []types.Output{{
+		Address: addr2.String(),
+		Coins:   triggerTrackSendAmount,
+	}, {
+		Address: addr3.String(),
+		Coins:   triggerTrackSendAmount,
+	}, {
+		Address: addr4.String(),
+		Coins:   triggerTrackSendAmount,
+	}, {
+		Address: addr5.String(),
+		Coins:   triggerTrackSendAmount,
+	}}
+	err = s.BankKeeper.InputOutputCoins(ctx, multiSendTrackInput, multiSendTrackOutput)
+	require.NoError(t, err)
+	expNextCount += 4
+	require.Equal(t, countTrackBeforeSend, expNextCount)
 }
