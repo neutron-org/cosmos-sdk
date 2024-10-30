@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 
 	gogoproto "github.com/cosmos/gogoproto/proto"
 	"google.golang.org/protobuf/reflect/protoregistry"
@@ -99,6 +100,9 @@ func (h SignModeHandler) GetSignBytes(_ context.Context, signerData signing.Sign
 		Msgs:          txData.Body.Messages,
 		Fee:           fee,
 	}
+
+	log.Printf("signDoc Msgs: %v", signDoc.Msgs)
+	log.Printf("signDoc: %v", signDoc)
 
 	return h.encoder.Marshal(signDoc)
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"os"
 	"sort"
 	"strconv"
 
@@ -876,6 +877,7 @@ func (app *BaseApp) runTx(mode execMode, txBytes []byte) (gInfo sdk.GasInfo, res
 	}
 
 	msgs := tx.GetMsgs()
+	fmt.Fprintf(os.Stderr, "tx.GetMsgs %v", msgs)
 	if err := validateBasicTxMsgs(msgs); err != nil {
 		return sdk.GasInfo{}, nil, nil, err
 	}

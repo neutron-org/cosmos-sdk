@@ -3,6 +3,7 @@ package signing
 import (
 	"context"
 	"fmt"
+	"log"
 
 	signingv1beta1 "cosmossdk.io/api/cosmos/tx/signing/v1beta1"
 	txsigning "cosmossdk.io/x/tx/signing"
@@ -73,7 +74,12 @@ func VerifySignature(
 		if err != nil {
 			return err
 		}
+		log.Printf("GetSignBytes signMode: %v", signMode)
+		log.Printf("GetSignBytes signerData: %v", signerData)
+		log.Printf("GetSignBytes txData.Body.Messages: %v", txData.Body.Messages)
+		log.Printf("GetSignBytes txData: %v", txData)
 		signBytes, err := handler.GetSignBytes(ctx, signMode, signerData, txData)
+		log.Printf("GetSignBytes signBytes: %v", signBytes)
 		if err != nil {
 			return err
 		}
