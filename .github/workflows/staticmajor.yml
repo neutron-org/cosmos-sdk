@@ -9,7 +9,7 @@ on:
 
 jobs:
   run_staticmajor:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3

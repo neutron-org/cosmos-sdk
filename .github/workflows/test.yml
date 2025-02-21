@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   split-test-files:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -44,7 +44,7 @@ jobs:
           path: ./pkgs.txt.part.03
 
   tests:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     needs: split-test-files
     strategy:
       fail-fast: false
@@ -83,7 +83,7 @@ jobs:
           path: ./${{ matrix.part }}profile.out
 
   test-integration:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -114,7 +114,7 @@ jobs:
           path: ./tests/integration-profile.out
 
   test-e2e:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -145,7 +145,7 @@ jobs:
           path: ./tests/e2e-profile.out
 
   repo-analysis:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     needs: [tests, test-integration, test-e2e]
     steps:
       - uses: actions/checkout@v3
@@ -191,7 +191,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   liveness-test:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v3
@@ -222,7 +222,7 @@ jobs:
           ./contrib/localnet_liveness.sh 100 5 50 localhost
 
   test-sim-nondeterminism:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -255,7 +255,7 @@ jobs:
   # They run when there is a diff in their respective directories.
 
   test-clientv2:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -286,7 +286,7 @@ jobs:
           projectBaseDir: client/v2/
 
   test-core:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -317,7 +317,7 @@ jobs:
           projectBaseDir: core/
 
   test-depinject:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -346,7 +346,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   test-errors:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -377,7 +377,7 @@ jobs:
           projectBaseDir: errors/
 
   test-math:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -408,7 +408,7 @@ jobs:
           projectBaseDir: math/
 
   test-simapp:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -436,7 +436,7 @@ jobs:
           go test -mod=readonly -timeout 30m -tags='app_v1 norace ledger test_ledger_mock rocksdb_build' ./...
 
   test-collections:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -467,7 +467,7 @@ jobs:
           projectBaseDir: collections/
 
   test-orm:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -498,7 +498,7 @@ jobs:
           projectBaseDir: orm/
 
   test-cosmovisor:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -529,7 +529,7 @@ jobs:
           projectBaseDir: tools/cosmovisor/
 
   test-confix:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -560,7 +560,7 @@ jobs:
           projectBaseDir: tools/confix/
 
   test-hubl:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -591,7 +591,7 @@ jobs:
           projectBaseDir: tools/hubl/
 
   test-store:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -622,7 +622,7 @@ jobs:
           projectBaseDir: store/
 
   test-log:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -660,7 +660,7 @@ jobs:
   # They run when there is a diff in their respective directories.
 
   test-x-tx:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -691,7 +691,7 @@ jobs:
           projectBaseDir: x/tx/
 
   test-x-nft:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -722,7 +722,7 @@ jobs:
           projectBaseDir: x/nft/
 
   test-x-circuit:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -753,7 +753,7 @@ jobs:
           projectBaseDir: x/circuit/
 
   test-x-feegrant:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -784,7 +784,7 @@ jobs:
           projectBaseDir: x/feegrant/
 
   test-x-evidence:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -814,7 +814,7 @@ jobs:
         with:
           projectBaseDir: x/evidence/
   test-x-upgrade:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4

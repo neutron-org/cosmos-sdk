@@ -18,7 +18,7 @@ jobs:
   install-runsim:
     permissions:
       contents: none
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/setup-go@v4
         with:
@@ -32,7 +32,7 @@ jobs:
           key: ${{ runner.os }}-go-runsim-binary
 
   test-sim-multi-seed-long:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -49,7 +49,7 @@ jobs:
 
   sims-notify-success:
     needs: [test-sim-multi-seed-long]
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     if: ${{ success() }}
     steps:
       - name: Check out repository
@@ -76,7 +76,7 @@ jobs:
     permissions:
       contents: none
     needs: [test-sim-multi-seed-long]
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     if: ${{ failure() }}
     steps:
       - name: Notify Slack on failure

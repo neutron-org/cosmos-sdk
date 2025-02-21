@@ -13,7 +13,7 @@ on:
 jobs:
   cherry_pick:
     permissions: write-all
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     name: Cherry pick into main
     if: github.event.pull_request.merged == true
     steps:
