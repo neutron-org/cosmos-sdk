@@ -89,7 +89,7 @@ func (h Hooks) AfterDelegationModified(_ context.Context, _ sdk.AccAddress, _ sd
 	return nil
 }
 
-func (h Hooks) BeforeValidatorSlashed(_ context.Context, _ sdk.ValAddress, _ sdkmath.LegacyDec) error {
+func (h Hooks) BeforeValidatorSlashed(_ context.Context, _ sdk.ValAddress, _ sdkmath.LegacyDec, _ sdkmath.Int) error {
 	return nil
 }
 

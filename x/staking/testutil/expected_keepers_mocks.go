@@ -711,15 +711,15 @@ func (mr *MockStakingHooksMockRecorder) BeforeValidatorModified(ctx, valAddr int
 }
 
 // BeforeValidatorSlashed mocks base method.
-func (m *MockStakingHooks) BeforeValidatorSlashed(ctx context.Context, valAddr types.ValAddress, fraction math.LegacyDec) error {
+func (m *MockStakingHooks) BeforeValidatorSlashed(ctx context.Context, valAddr types.ValAddress, fraction math.LegacyDec, tokensToBurn math.Int) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "BeforeValidatorSlashed", ctx, valAddr, fraction)
+	ret := m.ctrl.Call(m, "BeforeValidatorSlashed", ctx, valAddr, fraction, tokensToBurn)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // BeforeValidatorSlashed indicates an expected call of BeforeValidatorSlashed.
-func (mr *MockStakingHooksMockRecorder) BeforeValidatorSlashed(ctx, valAddr, fraction interface{}) *gomock.Call {
+func (mr *MockStakingHooksMockRecorder) BeforeValidatorSlashed(ctx, valAddr, fraction, tokensToBurn interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BeforeValidatorSlashed", reflect.TypeOf((*MockStakingHooks)(nil).BeforeValidatorSlashed), ctx, valAddr, fraction)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BeforeValidatorSlashed", reflect.TypeOf((*MockStakingHooks)(nil).BeforeValidatorSlashed), ctx, valAddr, fraction, tokensToBurn)
 }

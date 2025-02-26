@@ -167,7 +167,7 @@ func (k Keeper) Slash(ctx context.Context, consAddr sdk.ConsAddress, infractionH
 			effectiveFraction = oneDec
 		}
 		// call the before-slashed hook
-		if err := k.Hooks().BeforeValidatorSlashed(ctx, operatorAddress, effectiveFraction); err != nil {
+		if err := k.Hooks().BeforeValidatorSlashed(ctx, operatorAddress, effectiveFraction, tokensToBurn); err != nil {
 			k.Logger(ctx).Error("failed to call before validator slashed hook", "error", err)
 		}
 	}
