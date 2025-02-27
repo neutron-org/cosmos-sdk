@@ -166,9 +166,30 @@ func (k Keeper) Slash(ctx context.Context, consAddr sdk.ConsAddress, infractionH
 		if oneDec := math.LegacyOneDec(); effectiveFraction.GT(oneDec) {
 			effectiveFraction = oneDec
 		}
+
+		hooks := k.Hooks()
 		// call the before-slashed hook
-		if err := k.Hooks().BeforeValidatorSlashed(ctx, operatorAddress, effectiveFraction, tokensToBurn); err != nil {
-			k.Logger(ctx).Error("failed to call before validator slashed hook", "error", err)
+
+		multistakingHooks, isMultiStaking := hooks.(types.MultiStakingHooks)
+		if isMultiStaking {
+			for _, hookItem := range multistakingHooks {
+				hookItemWithTokensToBurn, withTokensToBurn := hookItem.(types.StakingHooksBeforeValidatorSlashedHasTokensToBurn)
+				if withTokensToBurn {
+					if err := hookItemWithTokensToBurn.BeforeValidatorSlashedWithTokensToBurn(ctx, operatorAddress, effectiveFraction, tokensToBurn); err != nil {
+						k.Logger(ctx).Error("failed to call before validator slashed hook", "error", err)
+						break // Emulate multiStakingHooks behaviour
+					}
+				} else {
+					if err := hookItem.BeforeValidatorSlashed(ctx, operatorAddress, effectiveFraction); err != nil {
+						k.Logger(ctx).Error("failed to call before validator slashed hook", "error", err)
+						break // Emulate multiStakingHooks behaviour
+					}
+				}
+			}
+		} else {
+			if err := hooks.BeforeValidatorSlashed(ctx, operatorAddress, effectiveFraction); err != nil {
+				k.Logger(ctx).Error("failed to call before validator slashed hook", "error", err)
+			}
 		}
 	}
 

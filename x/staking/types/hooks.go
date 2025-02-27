@@ -99,9 +99,9 @@ func (h MultiStakingHooks) AfterDelegationModified(ctx context.Context, delAddr 
 	return nil
 }
 
-func (h MultiStakingHooks) BeforeValidatorSlashed(ctx context.Context, valAddr sdk.ValAddress, fraction sdkmath.LegacyDec, tokensToBurn sdkmath.Int) error {
+func (h MultiStakingHooks) BeforeValidatorSlashed(ctx context.Context, valAddr sdk.ValAddress, fraction sdkmath.LegacyDec) error {
 	for i := range h {
-		if err := h[i].BeforeValidatorSlashed(ctx, valAddr, fraction, tokensToBurn); err != nil {
+		if err := h[i].BeforeValidatorSlashed(ctx, valAddr, fraction); err != nil {
 			return err
 		}
 	}

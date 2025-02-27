@@ -711,15 +711,206 @@ func (mr *MockStakingHooksMockRecorder) BeforeValidatorModified(ctx, valAddr int
 }
 
 // BeforeValidatorSlashed mocks base method.
-func (m *MockStakingHooks) BeforeValidatorSlashed(ctx context.Context, valAddr types.ValAddress, fraction math.LegacyDec, tokensToBurn math.Int) error {
+func (m *MockStakingHooks) BeforeValidatorSlashed(ctx context.Context, valAddr types.ValAddress, fraction math.LegacyDec) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "BeforeValidatorSlashed", ctx, valAddr, fraction, tokensToBurn)
+	ret := m.ctrl.Call(m, "BeforeValidatorSlashed", ctx, valAddr, fraction)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // BeforeValidatorSlashed indicates an expected call of BeforeValidatorSlashed.
-func (mr *MockStakingHooksMockRecorder) BeforeValidatorSlashed(ctx, valAddr, fraction, tokensToBurn interface{}) *gomock.Call {
+func (mr *MockStakingHooksMockRecorder) BeforeValidatorSlashed(ctx, valAddr, fraction interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BeforeValidatorSlashed", reflect.TypeOf((*MockStakingHooks)(nil).BeforeValidatorSlashed), ctx, valAddr, fraction, tokensToBurn)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BeforeValidatorSlashed", reflect.TypeOf((*MockStakingHooks)(nil).BeforeValidatorSlashed), ctx, valAddr, fraction)
+}
+
+// MockStakingHooksBeforeValidatorSlashedHasTokensToBurn is a mock of StakingHooksBeforeValidatorSlashedHasTokensToBurn interface.
+type MockStakingHooksBeforeValidatorSlashedHasTokensToBurn struct {
+	ctrl     *gomock.Controller
+	recorder *MockStakingHooksBeforeValidatorSlashedHasTokensToBurnMockRecorder
+}
+
+// MockStakingHooksBeforeValidatorSlashedHasTokensToBurnMockRecorder is the mock recorder for MockStakingHooksBeforeValidatorSlashedHasTokensToBurn.
+type MockStakingHooksBeforeValidatorSlashedHasTokensToBurnMockRecorder struct {
+	mock *MockStakingHooksBeforeValidatorSlashedHasTokensToBurn
+}
+
+// NewMockStakingHooksBeforeValidatorSlashedHasTokensToBurn creates a new mock instance.
+func NewMockStakingHooksBeforeValidatorSlashedHasTokensToBurn(ctrl *gomock.Controller) *MockStakingHooksBeforeValidatorSlashedHasTokensToBurn {
+	mock := &MockStakingHooksBeforeValidatorSlashedHasTokensToBurn{ctrl: ctrl}
+	mock.recorder = &MockStakingHooksBeforeValidatorSlashedHasTokensToBurnMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockStakingHooksBeforeValidatorSlashedHasTokensToBurn) EXPECT() *MockStakingHooksBeforeValidatorSlashedHasTokensToBurnMockRecorder {
+	return m.recorder
+}
+
+// AfterDelegationModified mocks base method.
+func (m *MockStakingHooksBeforeValidatorSlashedHasTokensToBurn) AfterDelegationModified(ctx context.Context, delAddr types.AccAddress, valAddr types.ValAddress) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AfterDelegationModified", ctx, delAddr, valAddr)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AfterDelegationModified indicates an expected call of AfterDelegationModified.
+func (mr *MockStakingHooksBeforeValidatorSlashedHasTokensToBurnMockRecorder) AfterDelegationModified(ctx, delAddr, valAddr interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AfterDelegationModified", reflect.TypeOf((*MockStakingHooksBeforeValidatorSlashedHasTokensToBurn)(nil).AfterDelegationModified), ctx, delAddr, valAddr)
+}
+
+// AfterUnbondingInitiated mocks base method.
+func (m *MockStakingHooksBeforeValidatorSlashedHasTokensToBurn) AfterUnbondingInitiated(ctx context.Context, id uint64) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AfterUnbondingInitiated", ctx, id)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AfterUnbondingInitiated indicates an expected call of AfterUnbondingInitiated.
+func (mr *MockStakingHooksBeforeValidatorSlashedHasTokensToBurnMockRecorder) AfterUnbondingInitiated(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AfterUnbondingInitiated", reflect.TypeOf((*MockStakingHooksBeforeValidatorSlashedHasTokensToBurn)(nil).AfterUnbondingInitiated), ctx, id)
+}
+
+// AfterValidatorBeginUnbonding mocks base method.
+func (m *MockStakingHooksBeforeValidatorSlashedHasTokensToBurn) AfterValidatorBeginUnbonding(ctx context.Context, consAddr types.ConsAddress, valAddr types.ValAddress) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AfterValidatorBeginUnbonding", ctx, consAddr, valAddr)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AfterValidatorBeginUnbonding indicates an expected call of AfterValidatorBeginUnbonding.
+func (mr *MockStakingHooksBeforeValidatorSlashedHasTokensToBurnMockRecorder) AfterValidatorBeginUnbonding(ctx, consAddr, valAddr interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AfterValidatorBeginUnbonding", reflect.TypeOf((*MockStakingHooksBeforeValidatorSlashedHasTokensToBurn)(nil).AfterValidatorBeginUnbonding), ctx, consAddr, valAddr)
+}
+
+// AfterValidatorBonded mocks base method.
+func (m *MockStakingHooksBeforeValidatorSlashedHasTokensToBurn) AfterValidatorBonded(ctx context.Context, consAddr types.ConsAddress, valAddr types.ValAddress) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AfterValidatorBonded", ctx, consAddr, valAddr)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AfterValidatorBonded indicates an expected call of AfterValidatorBonded.
+func (mr *MockStakingHooksBeforeValidatorSlashedHasTokensToBurnMockRecorder) AfterValidatorBonded(ctx, consAddr, valAddr interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AfterValidatorBonded", reflect.TypeOf((*MockStakingHooksBeforeValidatorSlashedHasTokensToBurn)(nil).AfterValidatorBonded), ctx, consAddr, valAddr)
+}
+
+// AfterValidatorCreated mocks base method.
+func (m *MockStakingHooksBeforeValidatorSlashedHasTokensToBurn) AfterValidatorCreated(ctx context.Context, valAddr types.ValAddress) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AfterValidatorCreated", ctx, valAddr)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AfterValidatorCreated indicates an expected call of AfterValidatorCreated.
+func (mr *MockStakingHooksBeforeValidatorSlashedHasTokensToBurnMockRecorder) AfterValidatorCreated(ctx, valAddr interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AfterValidatorCreated", reflect.TypeOf((*MockStakingHooksBeforeValidatorSlashedHasTokensToBurn)(nil).AfterValidatorCreated), ctx, valAddr)
+}
+
+// AfterValidatorRemoved mocks base method.
+func (m *MockStakingHooksBeforeValidatorSlashedHasTokensToBurn) AfterValidatorRemoved(ctx context.Context, consAddr types.ConsAddress, valAddr types.ValAddress) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AfterValidatorRemoved", ctx, consAddr, valAddr)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AfterValidatorRemoved indicates an expected call of AfterValidatorRemoved.
+func (mr *MockStakingHooksBeforeValidatorSlashedHasTokensToBurnMockRecorder) AfterValidatorRemoved(ctx, consAddr, valAddr interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AfterValidatorRemoved", reflect.TypeOf((*MockStakingHooksBeforeValidatorSlashedHasTokensToBurn)(nil).AfterValidatorRemoved), ctx, consAddr, valAddr)
+}
+
+// BeforeDelegationCreated mocks base method.
+func (m *MockStakingHooksBeforeValidatorSlashedHasTokensToBurn) BeforeDelegationCreated(ctx context.Context, delAddr types.AccAddress, valAddr types.ValAddress) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "BeforeDelegationCreated", ctx, delAddr, valAddr)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// BeforeDelegationCreated indicates an expected call of BeforeDelegationCreated.
+func (mr *MockStakingHooksBeforeValidatorSlashedHasTokensToBurnMockRecorder) BeforeDelegationCreated(ctx, delAddr, valAddr interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BeforeDelegationCreated", reflect.TypeOf((*MockStakingHooksBeforeValidatorSlashedHasTokensToBurn)(nil).BeforeDelegationCreated), ctx, delAddr, valAddr)
+}
+
+// BeforeDelegationRemoved mocks base method.
+func (m *MockStakingHooksBeforeValidatorSlashedHasTokensToBurn) BeforeDelegationRemoved(ctx context.Context, delAddr types.AccAddress, valAddr types.ValAddress) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "BeforeDelegationRemoved", ctx, delAddr, valAddr)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// BeforeDelegationRemoved indicates an expected call of BeforeDelegationRemoved.
+func (mr *MockStakingHooksBeforeValidatorSlashedHasTokensToBurnMockRecorder) BeforeDelegationRemoved(ctx, delAddr, valAddr interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BeforeDelegationRemoved", reflect.TypeOf((*MockStakingHooksBeforeValidatorSlashedHasTokensToBurn)(nil).BeforeDelegationRemoved), ctx, delAddr, valAddr)
+}
+
+// BeforeDelegationSharesModified mocks base method.
+func (m *MockStakingHooksBeforeValidatorSlashedHasTokensToBurn) BeforeDelegationSharesModified(ctx context.Context, delAddr types.AccAddress, valAddr types.ValAddress) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "BeforeDelegationSharesModified", ctx, delAddr, valAddr)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// BeforeDelegationSharesModified indicates an expected call of BeforeDelegationSharesModified.
+func (mr *MockStakingHooksBeforeValidatorSlashedHasTokensToBurnMockRecorder) BeforeDelegationSharesModified(ctx, delAddr, valAddr interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BeforeDelegationSharesModified", reflect.TypeOf((*MockStakingHooksBeforeValidatorSlashedHasTokensToBurn)(nil).BeforeDelegationSharesModified), ctx, delAddr, valAddr)
+}
+
+// BeforeValidatorModified mocks base method.
+func (m *MockStakingHooksBeforeValidatorSlashedHasTokensToBurn) BeforeValidatorModified(ctx context.Context, valAddr types.ValAddress) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "BeforeValidatorModified", ctx, valAddr)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// BeforeValidatorModified indicates an expected call of BeforeValidatorModified.
+func (mr *MockStakingHooksBeforeValidatorSlashedHasTokensToBurnMockRecorder) BeforeValidatorModified(ctx, valAddr interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BeforeValidatorModified", reflect.TypeOf((*MockStakingHooksBeforeValidatorSlashedHasTokensToBurn)(nil).BeforeValidatorModified), ctx, valAddr)
+}
+
+// BeforeValidatorSlashed mocks base method.
+func (m *MockStakingHooksBeforeValidatorSlashedHasTokensToBurn) BeforeValidatorSlashed(ctx context.Context, valAddr types.ValAddress, fraction math.LegacyDec) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "BeforeValidatorSlashed", ctx, valAddr, fraction)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// BeforeValidatorSlashed indicates an expected call of BeforeValidatorSlashed.
+func (mr *MockStakingHooksBeforeValidatorSlashedHasTokensToBurnMockRecorder) BeforeValidatorSlashed(ctx, valAddr, fraction interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BeforeValidatorSlashed", reflect.TypeOf((*MockStakingHooksBeforeValidatorSlashedHasTokensToBurn)(nil).BeforeValidatorSlashed), ctx, valAddr, fraction)
+}
+
+// BeforeValidatorSlashedWithTokensToBurn mocks base method.
+func (m *MockStakingHooksBeforeValidatorSlashedHasTokensToBurn) BeforeValidatorSlashedWithTokensToBurn(ctx context.Context, valAddr types.ValAddress, fraction math.LegacyDec, tokensToBurn math.Int) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "BeforeValidatorSlashedWithTokensToBurn", ctx, valAddr, fraction, tokensToBurn)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// BeforeValidatorSlashedWithTokensToBurn indicates an expected call of BeforeValidatorSlashedWithTokensToBurn.
+func (mr *MockStakingHooksBeforeValidatorSlashedHasTokensToBurnMockRecorder) BeforeValidatorSlashedWithTokensToBurn(ctx, valAddr, fraction, tokensToBurn interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BeforeValidatorSlashedWithTokensToBurn", reflect.TypeOf((*MockStakingHooksBeforeValidatorSlashedHasTokensToBurn)(nil).BeforeValidatorSlashedWithTokensToBurn), ctx, valAddr, fraction, tokensToBurn)
 }

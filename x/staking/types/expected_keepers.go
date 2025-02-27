@@ -107,7 +107,7 @@ type StakingHooks interface {
 	BeforeDelegationSharesModified(ctx context.Context, delAddr sdk.AccAddress, valAddr sdk.ValAddress) error // Must be called when a delegation's shares are modified
 	BeforeDelegationRemoved(ctx context.Context, delAddr sdk.AccAddress, valAddr sdk.ValAddress) error        // Must be called when a delegation is removed
 	AfterDelegationModified(ctx context.Context, delAddr sdk.AccAddress, valAddr sdk.ValAddress) error
-	BeforeValidatorSlashed(ctx context.Context, valAddr sdk.ValAddress, fraction math.LegacyDec, tokensToBurn math.Int) error
+	BeforeValidatorSlashed(ctx context.Context, valAddr sdk.ValAddress, fraction math.LegacyDec) error
 	AfterUnbondingInitiated(ctx context.Context, id uint64) error
 }
 
@@ -116,3 +116,9 @@ type StakingHooksWrapper struct{ StakingHooks }
 
 // IsOnePerModuleType implements the depinject.OnePerModuleType interface.
 func (StakingHooksWrapper) IsOnePerModuleType() {}
+
+type StakingHooksBeforeValidatorSlashedHasTokensToBurn interface {
+	StakingHooks
+
+	BeforeValidatorSlashedWithTokensToBurn(ctx context.Context, valAddr sdk.ValAddress, fraction math.LegacyDec, tokensToBurn math.Int) error // Must be called insted of BeforeValidatorSlashed if implemented
+}
