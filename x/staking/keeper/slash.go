@@ -169,22 +169,10 @@ func (k Keeper) Slash(ctx context.Context, consAddr sdk.ConsAddress, infractionH
 
 		hooks := k.Hooks()
 		// call the before-slashed hook
-
-		multistakingHooks, isMultiStaking := hooks.(types.MultiStakingHooks)
-		if isMultiStaking {
-			for _, hookItem := range multistakingHooks {
-				hookItemWithTokensToBurn, withTokensToBurn := hookItem.(types.StakingHooksBeforeValidatorSlashedHasTokensToBurn)
-				if withTokensToBurn {
-					if err := hookItemWithTokensToBurn.BeforeValidatorSlashedWithTokensToBurn(ctx, operatorAddress, effectiveFraction, tokensToBurn); err != nil {
-						k.Logger(ctx).Error("failed to call before validator slashed hook", "error", err)
-						break // Emulate multiStakingHooks behaviour
-					}
-				} else {
-					if err := hookItem.BeforeValidatorSlashed(ctx, operatorAddress, effectiveFraction); err != nil {
-						k.Logger(ctx).Error("failed to call before validator slashed hook", "error", err)
-						break // Emulate multiStakingHooks behaviour
-					}
-				}
+		hook, isWithBurn := hooks.(types.StakingHooksBeforeValidatorSlashedHasTokensToBurn)
+		if isWithBurn {
+			if err := hook.BeforeValidatorSlashedWithTokensToBurn(ctx, operatorAddress, effectiveFraction, tokensToBurn); err != nil {
+				k.Logger(ctx).Error("failed to call before validator slashed hook", "error", err)
 			}
 		} else {
 			if err := hooks.BeforeValidatorSlashed(ctx, operatorAddress, effectiveFraction); err != nil {
