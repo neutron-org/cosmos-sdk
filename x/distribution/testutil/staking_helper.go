@@ -89,7 +89,7 @@ func SlashValidator(
 			effectiveFraction = math.LegacyOneDec()
 		}
 		// call the before-slashed hook
-		err := distrKeeper.Hooks().BeforeValidatorSlashed(ctx, valBz, effectiveFraction, tokensToBurn)
+		err := distrKeeper.Hooks().BeforeValidatorSlashed(ctx, valBz, effectiveFraction)
 		if err != nil {
 			panic(err)
 		}
