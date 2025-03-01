@@ -116,7 +116,7 @@ type StakingHooks interface {
 type StakingHooksBeforeValidatorSlashedHasTokensToBurn interface {
 	StakingHooks
 
-	BeforeValidatorSlashedWithTokensToBurn(ctx context.Context, valAddr sdk.ValAddress, fraction math.LegacyDec, tokensToBurn math.Int) error // Must be called insted of BeforeValidatorSlashed if implemented
+	BeforeValidatorSlashedWithTokensToBurn(ctx context.Context, valAddr sdk.ValAddress, fraction math.LegacyDec, tokensToBurn math.Int) error // Must be called instead of BeforeValidatorSlashed if implemented
 }
 
 // StakingHooksWrapper is a wrapper for modules to inject StakingHooks using depinject.
