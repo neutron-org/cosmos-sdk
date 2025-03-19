@@ -166,9 +166,18 @@ func (k Keeper) Slash(ctx context.Context, consAddr sdk.ConsAddress, infractionH
 		if oneDec := math.LegacyOneDec(); effectiveFraction.GT(oneDec) {
 			effectiveFraction = oneDec
 		}
+
+		hooks := k.Hooks()
 		// call the before-slashed hook
-		if err := k.Hooks().BeforeValidatorSlashed(ctx, operatorAddress, effectiveFraction); err != nil {
-			k.Logger(ctx).Error("failed to call before validator slashed hook", "error", err)
+		hook, isWithBurn := hooks.(types.StakingHooksBeforeValidatorSlashedHasTokensToBurn)
+		if isWithBurn {
+			if err := hook.BeforeValidatorSlashedWithTokensToBurn(ctx, operatorAddress, effectiveFraction, tokensToBurn); err != nil {
+				k.Logger(ctx).Error("failed to call before validator slashed hook with tokens to burn", "error", err)
+			}
+		} else {
+			if err := hooks.BeforeValidatorSlashed(ctx, operatorAddress, effectiveFraction); err != nil {
+				k.Logger(ctx).Error("failed to call before validator slashed hook", "error", err)
+			}
 		}
 	}
 
