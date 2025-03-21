@@ -11,6 +11,7 @@ import (
 	"math/rand"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -42,6 +43,18 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/mempool"
 	"github.com/cosmos/cosmos-sdk/x/auth/signing"
 )
+
+type mockABCIListener struct {
+	ListenCommitFn func(context.Context, abci.ResponseCommit, []*storetypes.StoreKVPair) error
+}
+
+func (m mockABCIListener) ListenFinalizeBlock(_ context.Context, _ abci.RequestFinalizeBlock, _ abci.ResponseFinalizeBlock) error {
+	return nil
+}
+
+func (m *mockABCIListener) ListenCommit(ctx context.Context, commit abci.ResponseCommit, pairs []*storetypes.StoreKVPair) error {
+	return m.ListenCommitFn(ctx, commit, pairs)
+}
 
 func TestABCI_Info(t *testing.T) {
 	suite := NewBaseAppSuite(t)
@@ -2492,4 +2505,68 @@ func TestABCI_Proposal_FailReCheckTx(t *testing.T) {
 
 	require.NotEmpty(t, res.TxResults[0].Events)
 	require.True(t, res.TxResults[0].IsOK(), fmt.Sprintf("%v", res))
+}
+
+func TestFinalizeBlockDeferResponseHandle(t *testing.T) {
+	suite := NewBaseAppSuite(t, baseapp.SetHaltHeight(1), func(ba *baseapp.BaseApp) {
+		ba.SetStreamingManager(storetypes.StreamingManager{
+			ABCIListeners: []storetypes.ABCIListener{
+				&mockABCIListener{},
+			},
+		})
+	})
+
+	res, err := suite.baseApp.FinalizeBlock(&abci.RequestFinalizeBlock{
+		Height: 2,
+	})
+	require.Empty(t, res)
+	require.NotEmpty(t, err)
+}
+
+func TestABCI_Race_Commit_Query(t *testing.T) {
+	suite := NewBaseAppSuite(t, baseapp.SetChainID("test-chain-id"))
+	app := suite.baseApp
+
+	_, err := app.InitChain(&abci.RequestInitChain{
+		ChainId:         "test-chain-id",
+		ConsensusParams: &cmtproto.ConsensusParams{Block: &cmtproto.BlockParams{MaxGas: 5000000}},
+		InitialHeight:   1,
+	})
+	require.NoError(t, err)
+	_, err = app.Commit()
+	require.NoError(t, err)
+
+	counter := atomic.Uint64{}
+	counter.Store(0)
+
+	ctx, cancel := context.WithCancel(context.Background())
+	queryCreator := func() {
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			default:
+				_, err := app.CreateQueryContextWithCheckHeader(0, false, false)
+				require.NoError(t, err)
+
+				counter.Add(1)
+			}
+		}
+	}
+
+	for i := 0; i < 100; i++ {
+		go queryCreator()
+	}
+
+	for i := 0; i < 1000; i++ {
+		_, err = app.FinalizeBlock(&abci.RequestFinalizeBlock{Height: app.LastBlockHeight() + 1})
+		require.NoError(t, err)
+
+		_, err = app.Commit()
+		require.NoError(t, err)
+	}
+
+	cancel()
+
+	require.Equal(t, int64(1001), app.GetContextForCheckTx(nil).BlockHeight())
 }
