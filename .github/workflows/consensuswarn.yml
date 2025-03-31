@@ -11,7 +11,7 @@ jobs:
   main:
     permissions:
       pull-requests: write # For reading the PR and posting comment
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     steps:
       - uses: actions/checkout@v3
       - uses: orijtech/consensuswarn@main

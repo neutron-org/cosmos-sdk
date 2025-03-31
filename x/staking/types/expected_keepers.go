@@ -111,6 +111,14 @@ type StakingHooks interface {
 	AfterUnbondingInitiated(ctx context.Context, id uint64) error
 }
 
+// StakingHooksBeforeValidatorSlashedHasTokensToBurn is an interface to allow passing `tokensToBurn` as an argument to BeforeValidatorSlashed hook
+// without changing the StakingHooks interface.
+type StakingHooksBeforeValidatorSlashedHasTokensToBurn interface {
+	StakingHooks
+
+	BeforeValidatorSlashedWithTokensToBurn(ctx context.Context, valAddr sdk.ValAddress, fraction math.LegacyDec, tokensToBurn math.Int) error // Must be called instead of BeforeValidatorSlashed if implemented
+}
+
 // StakingHooksWrapper is a wrapper for modules to inject StakingHooks using depinject.
 type StakingHooksWrapper struct{ StakingHooks }
 

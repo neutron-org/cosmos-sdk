@@ -1,7 +1,7 @@
 package types
 
 import (
-	context "context"
+	"context"
 
 	sdkmath "cosmossdk.io/math"
 
@@ -10,6 +10,7 @@ import (
 
 // combine multiple staking hooks, all hook functions are run in array sequence
 var _ StakingHooks = &MultiStakingHooks{}
+var _ StakingHooksBeforeValidatorSlashedHasTokensToBurn = &MultiStakingHooks{}
 
 type MultiStakingHooks []StakingHooks
 
@@ -103,6 +104,23 @@ func (h MultiStakingHooks) BeforeValidatorSlashed(ctx context.Context, valAddr s
 	for i := range h {
 		if err := h[i].BeforeValidatorSlashed(ctx, valAddr, fraction); err != nil {
 			return err
+		}
+	}
+	return nil
+}
+
+func (h MultiStakingHooks) BeforeValidatorSlashedWithTokensToBurn(ctx context.Context, valAddr sdk.ValAddress, fraction sdkmath.LegacyDec, tokensToBurn sdkmath.Int) error {
+	for i := range h {
+		hook, isWithBurn := h[i].(StakingHooksBeforeValidatorSlashedHasTokensToBurn)
+
+		if isWithBurn {
+			if err := hook.BeforeValidatorSlashedWithTokensToBurn(ctx, valAddr, fraction, tokensToBurn); err != nil {
+				return err
+			}
+		} else {
+			if err := h[i].BeforeValidatorSlashed(ctx, valAddr, fraction); err != nil {
+				return err
+			}
 		}
 	}
 	return nil

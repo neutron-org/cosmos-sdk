@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     if: "!contains(github.event.head_commit.message, 'skip-sims')"
     steps:
       - uses: actions/checkout@v3
@@ -28,7 +28,7 @@ jobs:
   install-runsim:
     permissions:
       contents: none
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     needs: build
     steps:
       - uses: actions/setup-go@v4
@@ -43,7 +43,7 @@ jobs:
           key: ${{ runner.os }}-go-runsim-binary
 
   test-sim-import-export:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     needs: [build, install-runsim]
     steps:
       - uses: actions/checkout@v3
@@ -62,7 +62,7 @@ jobs:
           make test-sim-import-export
 
   test-sim-after-import:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     needs: [build, install-runsim]
     steps:
       - uses: actions/checkout@v3
@@ -81,7 +81,7 @@ jobs:
           make test-sim-after-import
 
   test-sim-multi-seed-short:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     needs: [build, install-runsim]
     timeout-minutes: 60
     steps:
@@ -103,7 +103,7 @@ jobs:
   sims-notify-success:
     needs:
       [test-sim-multi-seed-short, test-sim-after-import, test-sim-import-export]
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     if: ${{ success() }}
     steps:
       - uses: actions/checkout@v3
@@ -130,7 +130,7 @@ jobs:
       contents: none
     needs:
       [test-sim-multi-seed-short, test-sim-after-import, test-sim-import-export]
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-2
     if: ${{ failure() }}
     steps:
       - name: Notify Slack on failure
