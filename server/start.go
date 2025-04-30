@@ -106,6 +106,8 @@ const (
 	KeyNewValAddr            = "new-validator-addr"
 	KeyUserPubKey            = "user-pub-key"
 	KeyTriggerTestnetUpgrade = "trigger-testnet-upgrade"
+
+	FlagOptimisticExecutionEnabled = "optimistic-execution-enabled"
 )
 
 // StartCmdOptions defines options that can be customized in `StartCmdWithOptions`,
@@ -997,6 +999,9 @@ func addStartNodeFlags(cmd *cobra.Command, opts StartCmdOptions) {
 	cmd.Flags().Bool(FlagDisableIAVLFastNode, false, "Disable fast node for IAVL tree")
 	cmd.Flags().Int(FlagMempoolMaxTxs, mempool.DefaultMaxTx, "Sets MaxTx value for the app-side mempool")
 	cmd.Flags().Duration(FlagShutdownGrace, 0*time.Second, "On Shutdown, duration to wait for resource clean up")
+
+	// add optimistic execution flag
+	cmd.Flags().Bool(FlagOptimisticExecutionEnabled, false, "Enable optimistic execution")
 
 	// support old flags name for backwards compatibility
 	cmd.Flags().SetNormalizeFunc(func(f *pflag.FlagSet, name string) pflag.NormalizedName {
