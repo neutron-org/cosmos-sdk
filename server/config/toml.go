@@ -86,6 +86,9 @@ iavl-disable-fastnode = {{ .BaseConfig.IAVLDisableFastNode }}
 # The fallback is the db_backend value set in CometBFT's config.toml.
 app-db-backend = "{{ .BaseConfig.AppDBBackend }}"
 
+# OptimisticExecutionEnabled defines whether optimistic block production is enabled.
+optimistic-execution-enabled = {{ .BaseConfig.OptimisticExecutionEnabled }}
+
 ###############################################################################
 ###                         Telemetry Configuration                         ###
 ###############################################################################
