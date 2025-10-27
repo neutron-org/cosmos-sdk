@@ -3,9 +3,9 @@ package runtime
 import (
 	"encoding/json"
 	"fmt"
+	"slices"
 
 	abci "github.com/cometbft/cometbft/abci/types"
-	"golang.org/x/exp/slices"
 
 	runtimev1alpha1 "cosmossdk.io/api/cosmos/app/runtime/v1alpha1"
 	appv1alpha1 "cosmossdk.io/api/cosmos/app/v1alpha1"
@@ -40,7 +40,8 @@ import (
 type App struct {
 	*baseapp.BaseApp
 
-	ModuleManager     *module.Manager
+	ModuleManager *module.Manager
+
 	configurator      module.Configurator
 	config            *runtimev1alpha1.Module
 	storeKeys         []storetypes.StoreKey
@@ -79,8 +80,8 @@ func (a *App) RegisterModules(modules ...module.AppModule) error {
 
 		if module, ok := appModule.(module.HasServices); ok {
 			module.RegisterServices(a.configurator)
-		} else if module, ok := appModule.(appmodule.HasServices); ok {
-			if err := module.RegisterServices(a.configurator); err != nil {
+		} else if innerMod, ok := appModule.(appmodule.HasServices); ok {
+			if err := innerMod.RegisterServices(a.configurator); err != nil {
 				return err
 			}
 		}
@@ -172,12 +173,12 @@ func (a *App) EndBlocker(ctx sdk.Context) (sdk.EndBlock, error) {
 
 // Precommiter application updates every commit
 func (a *App) Precommiter(ctx sdk.Context) {
-	a.ModuleManager.Precommit(ctx)
+	_ = a.ModuleManager.Precommit(ctx)
 }
 
 // PrepareCheckStater application updates every commit
 func (a *App) PrepareCheckStater(ctx sdk.Context) {
-	a.ModuleManager.PrepareCheckState(ctx)
+	_ = a.ModuleManager.PrepareCheckState(ctx)
 }
 
 // InitChainer initializes the chain.

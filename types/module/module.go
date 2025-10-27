@@ -32,12 +32,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"maps"
+	"slices"
 	"sort"
 
 	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/spf13/cobra"
-	"golang.org/x/exp/maps"
 
 	"cosmossdk.io/core/appmodule"
 	"cosmossdk.io/core/genesis"
@@ -205,9 +206,11 @@ type AppModule interface {
 }
 
 // HasInvariants is the interface for registering invariants.
+//
+// Deprecated: this will be removed in the next Cosmos SDK release.
 type HasInvariants interface {
 	// RegisterInvariants registers module invariants.
-	RegisterInvariants(sdk.InvariantRegistry)
+	RegisterInvariants(sdk.InvariantRegistry) // nolint: staticcheck // deprecated interface
 }
 
 // HasServices is the interface for modules to register services.
@@ -265,6 +268,8 @@ func (GenesisOnlyAppModule) IsOnePerModuleType() {}
 func (GenesisOnlyAppModule) IsAppModule() {}
 
 // RegisterInvariants is a placeholder function register no invariants
+//
+// Deprecated: this function will be removed when x/crisis and invariants are removed from the cosmos SDK.
 func (GenesisOnlyAppModule) RegisterInvariants(_ sdk.InvariantRegistry) {}
 
 // ConsensusVersion implements AppModule/ConsensusVersion.
@@ -273,7 +278,7 @@ func (gam GenesisOnlyAppModule) ConsensusVersion() uint64 { return 1 }
 // Manager defines a module manager that provides the high level utility for managing and executing
 // operations for a group of modules
 type Manager struct {
-	Modules                  map[string]interface{} // interface{} is used now to support the legacy AppModule as well as new core appmodule.AppModule.
+	Modules                  map[string]any // interface{} is used now to support the legacy AppModule as well as new core appmodule.AppModule.
 	OrderInitGenesis         []string
 	OrderExportGenesis       []string
 	OrderPreBlockers         []string
@@ -286,7 +291,7 @@ type Manager struct {
 
 // NewManager creates a new Manager object.
 func NewManager(modules ...AppModule) *Manager {
-	moduleMap := make(map[string]interface{})
+	moduleMap := make(map[string]any)
 	modulesStr := make([]string, 0, len(modules))
 	preBlockModulesStr := make([]string, 0)
 	for _, module := range modules {
@@ -316,7 +321,7 @@ func NewManager(modules ...AppModule) *Manager {
 // NewManagerFromMap creates a new Manager object from a map of module names to module implementations.
 // This method should be used for apps and modules which have migrated to the cosmossdk.io/core.appmodule.AppModule API.
 func NewManagerFromMap(moduleMap map[string]appmodule.AppModule) *Manager {
-	simpleModuleMap := make(map[string]interface{})
+	simpleModuleMap := make(map[string]any)
 	modulesStr := make([]string, 0, len(simpleModuleMap))
 	preBlockModulesStr := make([]string, 0)
 	for name, module := range moduleMap {
@@ -445,13 +450,9 @@ func (m *Manager) SetOrderMigrations(moduleNames ...string) {
 }
 
 // RegisterInvariants registers all module invariants
-func (m *Manager) RegisterInvariants(ir sdk.InvariantRegistry) {
-	for _, module := range m.Modules {
-		if module, ok := module.(HasInvariants); ok {
-			module.RegisterInvariants(ir)
-		}
-	}
-}
+//
+// Deprecated: this function is a no-op and will be removed in the next release of the Cosmos SDK.
+func (m *Manager) RegisterInvariants(_ sdk.InvariantRegistry) {}
 
 // RegisterServices registers all module services
 func (m *Manager) RegisterServices(cfg Configurator) error {
@@ -620,7 +621,6 @@ func (m *Manager) assertNoForgottenModules(setOrderFnName string, moduleNames []
 	}
 	var missing []string
 	for m := range m.Modules {
-		m := m
 		if pass != nil && pass(m) {
 			continue
 		}
@@ -862,7 +862,6 @@ func (m *Manager) GetVersionMap() VersionMap {
 		if v, ok := v.(HasConsensusVersion); ok {
 			version = v.ConsensusVersion()
 		}
-		name := name
 		vermap[name] = version
 	}
 
@@ -871,7 +870,7 @@ func (m *Manager) GetVersionMap() VersionMap {
 
 // ModuleNames returns list of all module names, without any particular order.
 func (m *Manager) ModuleNames() []string {
-	return maps.Keys(m.Modules)
+	return slices.Collect(maps.Keys(m.Modules))
 }
 
 // DefaultMigrationsOrder returns a default migrations order: ascending alphabetical by module name,
