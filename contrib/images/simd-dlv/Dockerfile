@@ -20,7 +20,7 @@ COPY ./ /work
 RUN LEDGER_ENABLED=false make COSMOS_BUILD_OPTIONS="debug,nostrip" clean build
 
 
-FROM alpine AS run
+FROM alpine:3.23.3 AS run
 RUN apk add bash curl jq
 EXPOSE 26656 26657
 ENTRYPOINT ["/usr/bin/wrapper.sh"]
